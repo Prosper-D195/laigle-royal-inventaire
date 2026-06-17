@@ -1,39 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const articleController = require('../controllers/articleController');
 
-// [READ] Liste de tous les articles
-router.get('/', (req, res) => {
-  res.send("Liste de tous les articles de l'inventaire (Papayes Calina, poussins...)");
-});
+// 1. [READ] Liste globale
+router.get('/', articleController.getAllArticles);
 
-// [CREATE] Formulaire de création d'un article
-router.get('/creer', (req, res) => {
-  res.send("Formulaire pour ajouter un nouvel article");
-});
+// 2. [CREATE] Formulaires d'ajout
+router.get('/creer', articleController.getCreateForm);
+router.post('/creer', articleController.createArticle);
 
-// [CREATE] Traitement de la création
-router.post('/creer', (req, res) => {
-  res.send("Traitement de la création de l'article");
-});
+// 3. [UPDATE] Formulaires de modification
+router.get('/:id/modifier', articleController.getUpdateForm);
+router.post('/:id/modifier', articleController.updateArticle);
 
-// [READ] Détail d'un article spécifique
-router.get('/:id', (req, res) => {
-  res.send(`Affichage de l'article avec l'ID : ${req.params.id}`);
-});
+// 4. LIGNE 13 : Détail d'un article spécifique
+router.get('/:id', articleController.getArticleById);
 
-// [UPDATE] Formulaire de modification d'un article
-router.get('/:id/modifier', (req, res) => {
-  res.send(`Formulaire pour modifier l'article ${req.params.id}`);
-});
-
-// [UPDATE] Traitement de la modification
-router.post('/:id/modifier', (req, res) => {
-  res.send(`Traitement de la modification de l'article ${req.params.id}`);
-});
-
-// [DELETE] Suppression d'un article
-router.post('/:id/supprimer', (req, res) => {
-  res.send(`Suppression de l'article ${req.params.id}`);
-});
+// 5. [DELETE] Suppression
+router.post('/:id/supprimer', articleController.deleteArticle);
 
 module.exports = router;

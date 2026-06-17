@@ -1,16 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const categoriesRouter = require('./categories');
-const articlesRouter = require('./articles');
+// On importe notre tout nouveau contrôleur pour l'accueil
+const indexController = require('../controllers/indexController');
 
-// Page d'accueil principale
-router.get('/', (req, res) => {
-  res.send("Bienvenue sur le tableau de bord de l'inventaire L'AIGLE ROYAL !");
-});
-
-// Liaison des sous-routes
-router.use('/categories', categoriesRouter);
-router.use('/articles', articlesRouter);
+// fonction textuelle par celle du contrôleur
+router.get('/', indexController.getDashboard);
 
 module.exports = router;

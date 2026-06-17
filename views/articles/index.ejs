@@ -1,0 +1,36 @@
+<div class="page-header">
+    <h2><%= title %></h2>
+    <a href="/articles/creer" class="btn btn-primary">Ajouter un article</a>
+</div>
+
+<table class="inventory-table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Catégorie</th>
+            <th>Prix Unitaire</th>
+            <th>Quantité en Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% articles.forEach(article => { %>
+            <tr>
+                <td><strong><%= article.nom %></strong><br><small><%= article.description %></small></td>
+                <td><span class="badge"><%= article.categorie_nom || 'N/A' %></span></td>
+                <td><%= article.prix %> FCFA</td>
+                <td><%= article.quantite %> u</td>
+                <td>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <a href="/articles/<%= article.id %>/modifier" class="btn btn-warning btn-sm">Modifier</a>
+        
+        <form action="/articles/<%= article.id %>/supprimer" method="POST" onsubmit="return confirm('Supprimer cet article définitivement ?');" style="margin: 0; display: flex; gap: 5px;">
+            <input type="password" name="adminPassword" required placeholder="Code Secret" style="padding: 5px; width: 90px; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 12px;">
+            <button type="submit" class="btn btn-sm" style="background-color: #e53e3e; color: white; padding: 6px 10px;">Supprimer</button>
+        </form>
+    </div>
+</td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

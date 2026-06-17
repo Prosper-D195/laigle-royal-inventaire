@@ -1,0 +1,37 @@
+<div class="page-header">
+    <h2>📋 Historique des Flux de Stock</h2>
+    <p>Suivi en temps réel des entrées (récoltes/achats) et sorties (ventes/pertes).</p>
+</div>
+
+<table class="inventory-table">
+    <thead>
+        <tr>
+            <th>Date & Heure</th>
+            <th>Article</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Commentaire / Motif</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (mouvements.length === 0) { %>
+            <tr>
+                <td colspan="5" style="text-align: center; color: #718096;">Aucun mouvement enregistré pour le moment.</td>
+            </tr>
+        <% } else { %>
+            <% mouvements.forEach(mouv => { %>
+                <tr>
+                    <td><%= new Date(mouv.date_mouvement).toLocaleString('fr-FR') %></td>
+                    <td><strong><%= mouv.article_nom %></strong></td>
+                    <td>
+                        <span class="badge" style="background-color: <%= mouv.type_mouvement === 'ENTREE' ? '#c6f6d5' : '#fed7d7' %>; color: <%= mouv.type_mouvement === 'ENTREE' ? '#22543d' : '#9b2c2c' %>;">
+                            <%= mouv.type_mouvement %>
+                        </span>
+                    </td>
+                    <td><strong><%= mouv.type_mouvement === 'ENTREE' ? '+' : '-' %> <%= mouv.quantite %> u</strong></td>
+                    <td><i><%= mouv.commentaire || 'Aucun commentaire' %></i></td>
+                </tr>
+            <% }) %>
+        <% } %>
+    </tbody>
+</table>

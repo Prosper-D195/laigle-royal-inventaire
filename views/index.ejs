@@ -1,0 +1,162 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<div class="dashboard-welcome" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+    <div>
+        <h2>Bienvenue sur le tableau de bord L'AIGLE ROYAL</h2>
+        <p>Vue d'ensemble en temps réel de l'exploitation agricole.</p>
+    </div>
+    <button id="download-pdf" class="btn" style="background-color: #ff7900; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        🖨️ Exporter le Rapport (PDF)
+    </button>
+</div>
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>📦 Articles en Stock</h3>
+        <p class="stat-number"><%= totalArticles %></p>
+    </div>
+    <div class="stat-card">
+        <h3>📂 Catégories</h3>
+        <p class="stat-number"><%= totalCategories %></p>
+    </div>
+    <div class="stat-card value-card">
+        <h3>💰 Valeur du Stock</h3>
+        <p class="stat-number"><%= Number(totalValue).toLocaleString() %> FCFA</p>
+    </div>
+</div>
+
+<div class="dashboard-section" style="margin-top: 40px;">
+    <h3>⚠️ Alertes Suivi des Stocks (Moins de 10 unités)</h3>
+    
+    <% if (lowStockArticles.length === 0) { %>
+        <p class="success-alert">✅ Tous les niveaux de stock sont optimaux. Aucune rupture à signaler.</p>
+    <% } else { %>
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Quantité restante</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% lowStockArticles.forEach(article => { %>
+                    <tr class="low-stock-row">
+                        <td><strong><%= article.nom %></strong></td>
+                        <td class="stock-warning"><%= article.quantite %> u</td>
+                        <td><a href="/articles/<%= article.id %>/modifier" class="btn btn-warning btn-sm">Réapprovisionner</a></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="charts-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; margin-bottom: 40px;">
+    
+    <div class="chart-card" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #2d3748; font-size: 1.1rem;">💰 Valeur du Stock par Catégorie (FCFA)</h3>
+        <div style="position: relative; height:280px; width:100%">
+            <canvas id="categoryValueChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #2d3748; font-size: 1.1rem;">📊 Quantités Disponibles par Article</h3>
+        <div style="position: relative; height:280px; width:100%">
+            <canvas id="articleQuantityChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Récupération sécurisée des données injectées par le contrôleur Express
+    const catLabels = <%- JSON.stringify(catLabels || []) %>;
+    const catValues = <%- JSON.stringify(catValues || []) %>;
+    
+    const articleLabels = <%- JSON.stringify(articleLabels || []) %>;
+    const articleValues = <%- JSON.stringify(articleValues || []) %>;
+
+    // --- Configuration du Graphique 1 : Camembert (Valeurs) ---
+    const ctx1 = document.getElementById('categoryValueChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: catLabels,
+            datasets: [{
+                data: catValues,
+                backgroundColor: ['#ff7900', '#2b6cb0', '#38a169', '#ecc94b', '#4a5568'], // Palette orange / tropicale
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // --- Configuration du Graphique 2 : Barres (Quantités) ---
+    const ctx2 = document.getElementById('articleQuantityChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: articleLabels,
+            datasets: [{
+                label: 'Quantité (u)',
+                data: articleValues,
+                backgroundColor: 'rgba(255, 121, 0, 0.8)', // Orange signature
+                borderColor: '#ff7900',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false // Pas besoin de légende pour une seule série de données
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1 // Évite les nombres à virgule pour les stocks entiers
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    // Gestion de l'exportation PDF
+    document.getElementById('download-pdf').addEventListener('click', () => {
+        // Le bouton s'efface temporairement pour ne pas apparaître sur le PDF final
+        const bouton = document.getElementById('download-pdf');
+        bouton.style.display = 'none';
+
+        // Sélection de toute la zone de contenu à imprimer (les stats, alertes et graphiques)
+        const element = document.body; 
+
+        // Options de configuration du PDF
+        const options = {
+            margin:       10,
+            filename:     'Rapport_Stock_L_AIGLE_ROYAL.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true }, // scale 2 pour garder les graphiques bien nets
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Génération du PDF puis réapparition du bouton
+        html2pdf().set(options).from(element).save().then(() => {
+            bouton.style.display = 'flex'; // Le bouton revient une fois le PDF téléchargé
+        });
+    });
+</script>

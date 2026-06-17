@@ -1,0 +1,28 @@
+<div class="form-container">
+    <h2><%= title %></h2>
+
+    <form action="<%= categorie ? '/categories/' + categorie.id + '/modifier' : '/categories/creer' %>" method="POST">
+        
+        <div class="form-group">
+            <label for="nom">Nom de la catégorie :</label>
+            <input type="text" id="nom" name="nom" value="<%= categorie ? categorie.nom : '' %>" required placeholder="Ex: Matériel agricole, Fruits...">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" rows="4" placeholder="Décrivez brièvement cette catégorie..."><%= categorie ? categorie.description : '' %></textarea>
+        </div>
+
+        <% if (categorie) { %>
+            <div class="form-group alert-field">
+                <label for="adminPassword">🔒 Mot de passe Administrateur requis :</label>
+                <input type="password" id="adminPassword" name="adminPassword" required placeholder="Entrez le code secret pour valider les changements">
+            </div>
+        <% } %>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/categories" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>

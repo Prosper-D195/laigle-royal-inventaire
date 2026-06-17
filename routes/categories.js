@@ -1,39 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const categorieController = require('../controllers/categorieController');
 
-// [READ] Liste de toutes les catégories
-router.get('/', (req, res) => {
-  res.send("Liste de toutes les catégories (Verger, Élevage...)");
-});
+// 1. [READ] Liste globale
+router.get('/', categorieController.getAllCategories);
 
-// [CREATE] Formulaire de création d'une catégorie
-router.get('/creer', (req, res) => {
-  res.send("Formulaire pour ajouter une nouvelle catégorie");
-});
+// 2. [CREATE] Formulaires de création (Placés avant le :id variable)
+router.get('/creer', categorieController.getCreateForm);
+router.post('/creer', categorieController.createCategorie);
 
-// [CREATE] Traitement de la création
-router.post('/creer', (req, res) => {
-  res.send("Traitement de la création en base de données");
-});
+// 3. [UPDATE] Formulaires de modification
+router.get('/:id/modifier', categorieController.getUpdateForm);
+router.post('/:id/modifier', categorieController.updateCategorie);
 
-// [READ] Détail d'une catégorie spécifique
-router.get('/:id', (req, res) => {
-  res.send(`Affichage de la catégorie avec l'ID : ${req.params.id}`);
-});
+// 4. [READ] Voir les articles d'une catégorie spécifique
+router.get('/:id', categorieController.getCategorieById);
 
-// [UPDATE] Formulaire de modification d'une catégorie
-router.get('/:id/modifier', (req, res) => {
-  res.send(`Formulaire pour modifier la catégorie ${req.params.id}`);
-});
-
-// [UPDATE] Traitement de la modification
-router.post('/:id/modifier', (req, res) => {
-  res.send(`Traitement de la modification de la catégorie ${req.params.id}`);
-});
-
-// [DELETE] Suppression d'une catégorie
-router.post('/:id/supprimer', (req, res) => {
-  res.send(`Suppression de la catégorie ${req.params.id}`);
-});
+// 5. [DELETE] Suppression
+router.post('/:id/supprimer', categorieController.deleteCategorie);
 
 module.exports = router;

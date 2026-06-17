@@ -1,0 +1,237 @@
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #d35400;
+    --bg-color: #f5f6fa;
+    --card-bg: #ffffff;
+    --text-color: #333;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.slogan {
+    color: #f1c40f;
+    margin-top: -5px;
+    margin-bottom: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #f1c40f;
+}
+
+main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--bg-color);
+    padding-bottom: 10px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-primary { background-color: var(--accent-color); color: white; }
+.btn-info { background-color: #3498db; color: white; }
+.btn-warning { background-color: #f1c40f; color: #333; }
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #e2e8f0;
+    margin-top: 50px;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.inventory-table th, .inventory-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.inventory-table th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.badge {
+    background-color: #e2e8f0;
+    color: #4a5568;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.alert {
+    background-color: #feebc8;
+    color: #c05621;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #dd6b20;
+}
+
+.form-container {
+    background: white;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.form-group input, .form-group textarea {
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.alert-field {
+    background-color: #fffaf0;
+    padding: 15px;
+    border: 1px dashed #dd6b20;
+    border-radius: 6px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn-secondary {
+    background-color: #718096;
+    color: white;
+}
+button.btn {
+    border: none;
+    cursor: pointer;
+}
+
+.dashboard-welcome {
+    margin-bottom: 30px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: center;
+    border-top: 4px solid var(--primary-color);
+}
+
+.value-card {
+    border-top: 4px solid var(--accent-color);
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0 0 0;
+    color: var(--primary-color);
+}
+
+.value-card .stat-number {
+    color: var(--accent-color);
+}
+
+.success-alert {
+    background-color: #c6f6d5;
+    color: #22543d;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #38a169;
+}
+
+.low-stock-row {
+    background-color: #fff5f5;
+}
+
+.stock-warning {
+    color: #e53e3e;
+    font-weight: bold;
+}

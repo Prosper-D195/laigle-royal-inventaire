@@ -1,0 +1,25 @@
+<div class="page-header">
+    <div>
+        <h2>Articles dans la catégorie : <%= categorie.nom %></h2>
+        <p><%= categorie.description %></p>
+    </div>
+    <a href="/categories" class="btn btn-info">Retour aux catégories</a>
+</div>
+
+<% if (articles.length === 0) { %>
+    <p class="alert">Aucun article dans cette catégorie pour le moment.</p>
+<% } else { %>
+    <div class="grid-container">
+        <% articles.forEach(article => { %>
+            <div class="card">
+                <h3><%= article.nom %></h3>
+                <p><%= article.description %></p>
+                <p><strong>Prix :</strong> <%= article.prix %> FCFA</p>
+                <p><strong>Stock disponible :</strong> <%= article.quantite %></p>
+                <div class="card-actions">
+                    <a href="/articles/<%= article.id %>/modifier" class="btn btn-warning">Modifier</a>
+                </div>
+            </div>
+        <% }) %>
+    <% } %>
+</div>
